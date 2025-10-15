@@ -1,0 +1,55 @@
+{{! 
+  This file is part of Moodle - https://moodle.org/
+
+  Moodle is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Moodle is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Moodle.  If not, see https://www.gnu.org/licenses/.
+}}
+
+<div id="asyntai-status" style="margin:10px 0;">
+    {{#isconnected}}
+        {{#str}} status, local_asyntai {{/str}}:
+        <span style="color:#008a20;">{{#str}} connected, local_asyntai {{/str}}</span>
+        {{#accountemail}} {{#str}} as, local_asyntai {{/str}} {{.}} {{/accountemail}}
+        <a class="btn btn-secondary" style="margin-left:8px;" href="{{reseturl}}">{{#str}} reset, local_asyntai {{/str}}</a>
+    {{/isconnected}}
+    {{^isconnected}}
+        {{#str}} status, local_asyntai {{/str}}:
+        <span style="color:#a00;">{{#str}} notconnected, local_asyntai {{/str}}</span>
+    {{/isconnected}}
+    
+</div>
+
+<div id="asyntai-alert" class="alert" style="display:none;margin-top:10px;"></div>
+
+<div id="asyntai-connected-box" style="display: {{#isconnected}}block{{/isconnected}}{{^isconnected}}none{{/isconnected}};">
+    <div style="max-width:820px;margin:20px auto;padding:20px;border:1px solid #ddd;border-radius:8px;background:#fff;text-align:center;">
+        <div style="font-size:20px;font-weight:700;margin-bottom:8px;">{{#str}} enabledtitle, local_asyntai {{/str}}</div>
+        <div style="font-size:16px;margin-bottom:16px;">{{#str}} enableddesc, local_asyntai {{/str}}</div>
+        <a class="btn btn-primary" href="{{panelurl}}" target="_blank" rel="noopener">{{#str}} openpanel, local_asyntai {{/str}}</a>
+        <div style="margin-top:16px;font-size:14px;color:#666;">
+            <strong>{{#str}} tip, local_asyntai {{/str}}</strong>
+            {{#str}} tipdesc, local_asyntai {{/str}}
+            <a href="{{setupurl}}" target="_blank" rel="noopener" style="color:#3182ce;text-decoration:underline;">{{#str}} gohere, local_asyntai {{/str}}</a>.
+        </div>
+    </div>
+</div>
+
+<div id="asyntai-popup-wrap" style="display: {{#isconnected}}none{{/isconnected}}{{^isconnected}}block{{/isconnected}};">
+    <div style="max-width:960px;margin:60px auto;padding:32px;border:1px solid #ddd;border-radius:16px;background:#fff;text-align:center;">
+        <div style="font-size:18px;margin-bottom:12px;">{{#str}} connectprompt, local_asyntai {{/str}}</div>
+        <button id="asyntai-connect-btn" class="btn btn-primary">{{#str}} getstarted, local_asyntai {{/str}}</button>
+        <div style="margin-top:12px;color:#666;">{{#str}} fallbacktext, local_asyntai {{/str}} <a id="asyntai-fallback-link" href="#" target="_blank" rel="noopener">{{#str}} openconnectwindow, local_asyntai {{/str}}</a>.</div>
+    </div>
+</div>
+
+
