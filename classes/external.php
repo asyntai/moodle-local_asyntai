@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+/**
+ * External API functions for Asyntai plugin.
+ *
+ * @package     local_asyntai
+ * @copyright   2025 Asyntai <hello@asyntai.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_asyntai;
 
 defined('MOODLE_INTERNAL') || die();
@@ -26,6 +34,13 @@ use \external_function_parameters;
 use \external_single_structure;
 use \external_value;
 
+/**
+ * External API class for Asyntai connection management.
+ *
+ * @package     local_asyntai
+ * @copyright   2025 Asyntai <hello@asyntai.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class external extends external_api {
     public static function save_connection_parameters(): external_function_parameters {
         return new external_function_parameters([
