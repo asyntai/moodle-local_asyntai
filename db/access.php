@@ -33,5 +33,15 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         ),
     ),
+    // Read-only capability used by the Asyntai content sync web service.
+    // The token Asyntai holds is bound to this capability and to a service
+    // that contains one function, so it can read nothing else.
+    'local/asyntai:sync' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+        ),
+    ),
 );
-

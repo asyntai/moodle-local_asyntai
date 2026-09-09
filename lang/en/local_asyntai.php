@@ -50,3 +50,30 @@ $string['enabled'] = 'Asyntai connected. Chatbot enabled on all pages.';
 $string['savefailed'] = 'Save failed';
 $string['couldnotsave'] = 'Could not save settings: {$a}';
 
+// Content sync strings.
+$string['asyntai:sync'] = 'Read the ticked course material for Asyntai';
+$string['synctitle'] = 'Course content';
+$string['syncdesc'] = 'Choose which courses Asyntai may read. The chatbot answers questions from the material in those courses. Nothing is read until you tick a course and save.';
+$string['syncenable'] = 'Let Asyntai read the ticked courses';
+$string['synccourses'] = 'Courses';
+$string['synctypes'] = 'Activity types';
+$string['syncsave'] = 'Save content settings';
+$string['syncsaved'] = 'Content settings saved.';
+$string['nocourses'] = 'This site has no courses yet.';
+$string['coursehidden'] = '(hidden)';
+$string['syncnote'] = 'Only the course material is read: descriptions, pages, book chapters and attached files. Student data is never read. That includes grades, submissions, forum posts and quiz answers.';
+
+// Privacy strings.
+$string['privacy:metadata:asyntai'] = 'The chatbot runs on the Asyntai service, so some data leaves this site.';
+$string['privacy:metadata:asyntai:message'] = 'The message a visitor types into the chat window, so the AI can answer it.';
+$string['privacy:metadata:asyntai:language'] = 'The language of the page, so the AI answers in the right one.';
+$string['privacy:metadata:asyntai:pageurl'] = 'The address of the page the visitor is on, so the answer fits the page.';
+$string['privacy:metadata:asyntai:coursecontent'] = 'The material in the courses the administrator ticked, so the AI can answer questions about them. Student data is never sent.';
+
+// Handing the token over to Asyntai.
+$string['synctokenfailed'] = 'Could not create the read key. Check that the Asyntai plugin finished installing, then try again.';
+$string['syncstagefailed'] = 'Saved, but Asyntai could not be reached. The read key was removed again. Check the server can reach asyntai.com, then press Save once more.';
+$string['claimtitle'] = 'One more step';
+$string['claimdesc'] = 'Sign in to Asyntai to finish. Until you do, the ticked courses are not read.';
+$string['claimbutton'] = 'Finish in Asyntai';
+

@@ -34,7 +34,26 @@ $functions = array(
         'ajax'        => true,
         'capabilities'=> 'local/asyntai:manage',
     ),
+    'local_asyntai_get_course_content' => array(
+        'classname'   => 'local_asyntai\external',
+        'methodname'  => 'get_course_content',
+        'classpath'   => '',
+        'description' => 'Return the text of the courses the administrator ticked for Asyntai',
+        'type'        => 'read',
+        'ajax'        => false,
+        'capabilities'=> 'local/asyntai:sync',
+    ),
 );
 
-
-
+// A service of its own, holding exactly one function. The token Asyntai is
+// given belongs to this service, so it cannot call anything else in Moodle.
+$services = array(
+    'Asyntai content sync' => array(
+        'functions' => array('local_asyntai_get_course_content'),
+        'restrictedusers' => 0,
+        'enabled' => 1,
+        'shortname' => 'local_asyntai_sync',
+        'downloadfiles' => 1,
+        'uploadfiles' => 0,
+    ),
+);

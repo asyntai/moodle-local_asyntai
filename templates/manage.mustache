@@ -44,6 +44,64 @@
     </div>
 </div>
 
+{{#showclaim}}
+{{! Not an .alert box on purpose: Boost recolours every link inside an alert
+    to the alert's own text colour, and that rule wins over .btn-primary, so
+    the button came out with dark text on a dark blue background. }}
+<div style="max-width:820px;margin:20px auto;padding:20px;border:1px solid #ddd;border-radius:8px;background:#fff;">
+    <div style="font-size:20px;font-weight:700;margin-bottom:8px;">{{#str}} claimtitle, local_asyntai {{/str}}</div>
+    <div style="margin-bottom:16px;color:#444;">{{#str}} claimdesc, local_asyntai {{/str}}</div>
+    <a class="btn btn-primary" href="{{claimurl}}" target="_blank" rel="noopener">{{#str}} claimbutton, local_asyntai {{/str}}</a>
+</div>
+{{/showclaim}}
+
+{{#isconnected}}
+<form method="post" action="{{formurl}}" style="max-width:820px;margin:20px auto;padding:20px;border:1px solid #ddd;border-radius:8px;background:#fff;">
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+    <input type="hidden" name="savesync" value="1">
+
+    <div style="font-size:20px;font-weight:700;margin-bottom:8px;">{{#str}} synctitle, local_asyntai {{/str}}</div>
+    <div style="margin-bottom:16px;color:#444;">{{#str}} syncdesc, local_asyntai {{/str}}</div>
+
+    <div class="form-check" style="margin-bottom:16px;">
+        <input class="form-check-input" type="checkbox" id="asyntai-syncenabled" name="syncenabled" value="1" {{#syncenabled}}checked{{/syncenabled}}>
+        <label class="form-check-label" for="asyntai-syncenabled"><strong>{{#str}} syncenable, local_asyntai {{/str}}</strong></label>
+    </div>
+
+    <div style="font-weight:600;margin:16px 0 8px;">{{#str}} synccourses, local_asyntai {{/str}}</div>
+    {{^hascourses}}
+        <div style="color:#666;">{{#str}} nocourses, local_asyntai {{/str}}</div>
+    {{/hascourses}}
+    {{#hascourses}}
+    <div style="max-height:280px;overflow:auto;border:1px solid #eee;border-radius:6px;padding:10px;">
+        {{#courses}}
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="asyntai-course-{{id}}" name="courses[]" value="{{id}}" {{#checked}}checked{{/checked}}>
+            <label class="form-check-label" for="asyntai-course-{{id}}">
+                {{fullname}} <span style="color:#888;">({{shortname}}{{#categoryname}} &middot; {{.}}{{/categoryname}})</span>
+                {{#hidden}} <span style="color:#a00;">{{#str}} coursehidden, local_asyntai {{/str}}</span>{{/hidden}}
+            </label>
+        </div>
+        {{/courses}}
+    </div>
+    {{/hascourses}}
+
+    <div style="font-weight:600;margin:16px 0 8px;">{{#str}} synctypes, local_asyntai {{/str}}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;">
+        {{#types}}
+        <div class="form-check" style="min-width:160px;">
+            <input class="form-check-input" type="checkbox" id="asyntai-type-{{type}}" name="types[]" value="{{type}}" {{#checked}}checked{{/checked}}>
+            <label class="form-check-label" for="asyntai-type-{{type}}">{{label}}</label>
+        </div>
+        {{/types}}
+    </div>
+
+    <div style="margin-top:16px;font-size:13px;color:#666;">{{#str}} syncnote, local_asyntai {{/str}}</div>
+
+    <button type="submit" class="btn btn-primary" style="margin-top:16px;">{{#str}} syncsave, local_asyntai {{/str}}</button>
+</form>
+{{/isconnected}}
+
 <div id="asyntai-popup-wrap" style="display: {{#isconnected}}none{{/isconnected}}{{^isconnected}}block{{/isconnected}};">
     <div style="max-width:960px;margin:60px auto;padding:32px;border:1px solid #ddd;border-radius:16px;background:#fff;text-align:center;">
         <div style="font-size:18px;margin-bottom:12px;">{{#str}} connectprompt, local_asyntai {{/str}}</div>

@@ -15,7 +15,11 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Privacy subsystem implementation for local_asyntai.
+ * Privacy provider.
+ *
+ * The plugin stores no personal data in Moodle itself. It does send data to
+ * Asyntai, so it declares that external location: the chat messages a visitor
+ * types into the widget, and the course material the administrator ticked.
  *
  * @package     local_asyntai
  * @copyright   2025 Asyntai <hello@asyntai.com>
@@ -26,18 +30,32 @@ namespace local_asyntai\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
-use core_privacy\local\metadata\null_provider;
+use core_privacy\local\metadata\collection;
 
 /**
- * Privacy provider: this plugin stores only site configuration, no user data.
- *
- * @package     local_asyntai
- * @copyright   2025 Asyntai <hello@asyntai.com>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Privacy provider: no local storage, one external location.
  */
-class provider implements null_provider {
-    public static function get_reason(): string {
-        return 'privacy:metadata';
+class provider implements
+        \core_privacy\local\metadata\provider,
+        \core_privacy\local\request\data_provider {
+
+    /**
+     * Describe what leaves the site.
+     *
+     * @param collection $collection
+     * @return collection
+     */
+    public static function get_metadata(collection $collection): collection {
+        $collection->add_external_location_link(
+            'asyntai',
+            [
+                'message' => 'privacy:metadata:asyntai:message',
+                'language' => 'privacy:metadata:asyntai:language',
+                'pageurl' => 'privacy:metadata:asyntai:pageurl',
+                'coursecontent' => 'privacy:metadata:asyntai:coursecontent',
+            ],
+            'privacy:metadata:asyntai'
+        );
+        return $collection;
     }
 }
-

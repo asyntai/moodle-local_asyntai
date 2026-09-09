@@ -24,6 +24,34 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+define('ASYNTAI_WIDGET_URL', 'https://widget.asyntai.com/static/js/chat-widget.js');
+
+/**
+ * Where the widget script is loaded from.
+ *
+ * The widget moved to its own host. Sites that connected before that still
+ * have the old address saved from the day they connected, and asking a
+ * hundred administrators to reconnect is not reasonable. So the old address
+ * is swapped for the new one here, when the page is built. Only that exact
+ * address is swapped: anything else an administrator set deliberately, or
+ * anything we may serve from elsewhere later, is left alone.
+ *
+ * @return string
+ */
+function local_asyntai_script_url() {
+    $src = (string) get_config('local_asyntai', 'script_url');
+    if ($src === '') {
+        return ASYNTAI_WIDGET_URL;
+    }
+    $host = parse_url($src, PHP_URL_HOST);
+    $path = parse_url($src, PHP_URL_PATH);
+    if (in_array($host, array('asyntai.com', 'www.asyntai.com'), true)
+            && $path === '/static/js/chat-widget.js') {
+        return ASYNTAI_WIDGET_URL;
+    }
+    return $src;
+}
+
 /**
  * Inject the Asyntai chat widget on all pages when configured.
  * This runs on most page loads as navigation is built.
@@ -38,13 +66,12 @@ function local_asyntai_extend_navigation(global_navigation $nav) {
     if ($siteid === '') {
         return;
     }
-    $scripturl = (string) get_config('local_asyntai', 'script_url');
-    if ($scripturl === '') {
-        $scripturl = 'https://asyntai.com/static/js/chat-widget.js';
-    }
+    $scripturl = local_asyntai_script_url();
 
-    // Inline loader mirrors other CMS plugins: async+defer and data-asyntai-id attribute.
-    $code = '(function(){var s=document.createElement("script");s.async=true;s.defer=true;s.src=' . json_encode($scripturl) . ';s.setAttribute("data-asyntai-id",' . json_encode($siteid) . ');s.charset="UTF-8";var f=document.getElementsByTagName("script")[0];if(f&&f.parentNode){f.parentNode.insertBefore(s,f);}else if(document.head){document.head.appendChild(s);}})();';
+    // Inline loader mirrors other CMS plugins: injects the widget script only
+    // after the page's load event, since an async script tag still holds the
+    // load event open until its fetch times out when Asyntai is unreachable.
+    $code = '(function(){var l=function(){var s=document.createElement("script");s.src=' . json_encode($scripturl) . ';s.async=true;s.setAttribute("data-asyntai-id",' . json_encode($siteid) . ');document.head.appendChild(s)};if(document.readyState==="complete"){l()}else{window.addEventListener("load",l)}})();';
     $PAGE->requires->js_init_code($code);
 }
 
