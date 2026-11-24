@@ -47,7 +47,7 @@ By default the chatbot answers from what you set up in the Asyntai dashboard. Yo
 
 Nothing is read until you tick a course. You can untick a course at any time and it stops being read.
 
-**What is read:** course names, descriptions, pages, book chapters, labels, activity descriptions, and the names of attached files.
+**What is read:** course names, descriptions, pages, book chapters, lesson content pages, labels, activity descriptions, and the names of attached files.
 
 **What is never read:** anything belonging to a student. Grades, submissions, forum posts, quiz answers and personal details all stay inside Moodle.
 

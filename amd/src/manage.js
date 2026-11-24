@@ -38,9 +38,11 @@ define(['core/ajax', 'core/str'], function(Ajax, Str) {
     }
 
     function pollForConnection(expectedOrigin, state, onDone) {
+        // Creating an account can take several minutes, so keep asking for
+        // up to ten minutes: 300 checks, two seconds apart.
         var attempts = 0;
         function check() {
-            if (attempts++ > 60) {
+            if (attempts++ > 300) {
                 return;
             }
             var script = document.createElement('script');
@@ -53,10 +55,10 @@ define(['core/ajax', 'core/str'], function(Ajax, Str) {
                     onDone(data);
                     return;
                 }
-                setTimeout(check, 500);
+                setTimeout(check, 2000);
             };
             script.onerror = function() {
-                setTimeout(check, 1000);
+                setTimeout(check, 2000);
             };
             document.head.appendChild(script);
         }

@@ -25,9 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_asyntai';
-$plugin->version = 2026090900;           // YYYYMMDDXX format
-$plugin->requires = 2020061500;          // Moodle 3.9+
+$plugin->version = 2026112400;           // YYYYMMDDXX format.
+$plugin->requires = 2020061500;          // Moodle 3.9 and later.
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.1.0';
-
-
+$plugin->release = '1.2.0';

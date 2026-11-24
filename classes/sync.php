@@ -36,7 +36,11 @@ defined('MOODLE_INTERNAL') || die();
 class sync {
 
     /** @var string[] Activity types the sync can read text from. */
-    const MODULE_TYPES = array('page', 'book', 'label', 'resource', 'url', 'folder', 'assign', 'forum', 'glossary', 'quiz');
+    const MODULE_TYPES = array('page', 'book', 'lesson', 'label', 'resource', 'url', 'folder', 'assign', 'forum',
+        'glossary', 'quiz', 'h5pactivity', 'scorm', 'lti');
+
+    /** @var int lesson_pages.qtype of a content page, as opposed to a question page. */
+    const LESSON_CONTENT_PAGE = 20;
 
     /** @var string[] Types ticked when the administrator has never chosen. */
     const DEFAULT_TYPES = array('page', 'book', 'label', 'resource', 'url');
@@ -254,7 +258,8 @@ class sync {
      *
      * Deliberately never touches anything a student wrote: forum posts, quiz
      * questions, submissions and glossary entries are all left alone. Only the
-     * teacher's own description and page content are read.
+     * teacher's own description, page, book chapter and lesson content pages
+     * are read.
      *
      * @param \cm_info $cm
      * @return string
@@ -284,6 +289,12 @@ class sync {
                 $parts[] = self::to_text($chapter->content, (int) $chapter->contentformat);
             }
         }
+        if ($cm->modname === 'lesson') {
+            foreach (self::lesson_content_pages((int) $cm->instance) as $lessonpage) {
+                $parts[] = (string) $lessonpage->title;
+                $parts[] = self::to_text($lessonpage->contents, (int) $lessonpage->contentsformat);
+            }
+        }
         if ($cm->modname === 'assign' && !empty($record->activity)) {
             $parts[] = self::to_text($record->activity,
                 isset($record->activityformat) ? (int) $record->activityformat : FORMAT_HTML);
@@ -293,6 +304,49 @@ class sync {
             $text = \core_text::substr($text, 0, self::MAX_MODULE_CHARS);
         }
         return $text;
+    }
+
+    /**
+     * The content pages of a lesson, in the order a learner meets them.
+     *
+     * Question pages are skipped, so answers and feedback are never read.
+     *
+     * @param int $lessonid
+     * @return \stdClass[]
+     */
+    protected static function lesson_content_pages(int $lessonid): array {
+        global $DB;
+        $pages = $DB->get_records('lesson_pages', array('lessonid' => $lessonid), 'id ASC',
+            'id, prevpageid, nextpageid, qtype, title, contents, contentsformat');
+        if (!$pages) {
+            return array();
+        }
+
+        // Follow the page chain from the first page. Ordering by id alone would
+        // put pages added later at the end, wherever the teacher placed them.
+        $ordered = array();
+        $current = null;
+        foreach ($pages as $page) {
+            if ((int) $page->prevpageid === 0) {
+                $current = $page;
+                break;
+            }
+        }
+        while ($current && !isset($ordered[$current->id])) {
+            $ordered[$current->id] = $current;
+            $next = (int) $current->nextpageid;
+            $current = ($next && isset($pages[$next])) ? $pages[$next] : null;
+        }
+        // Anything the chain missed still counts.
+        foreach ($pages as $page) {
+            if (!isset($ordered[$page->id])) {
+                $ordered[$page->id] = $page;
+            }
+        }
+
+        return array_values(array_filter($ordered, function($page) {
+            return (int) $page->qtype === self::LESSON_CONTENT_PAGE;
+        }));
     }
 
     /**

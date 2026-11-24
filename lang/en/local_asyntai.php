@@ -61,7 +61,7 @@ $string['syncsave'] = 'Save content settings';
 $string['syncsaved'] = 'Content settings saved.';
 $string['nocourses'] = 'This site has no courses yet.';
 $string['coursehidden'] = '(hidden)';
-$string['syncnote'] = 'Only the course material is read: descriptions, pages, book chapters and attached files. Student data is never read. That includes grades, submissions, forum posts and quiz answers.';
+$string['syncnote'] = 'Only the course material is read: descriptions, pages, book chapters, lesson content pages and attached files. Student data is never read. That includes grades, submissions, forum posts and quiz answers.';
 
 // Privacy strings.
 $string['privacy:metadata:asyntai'] = 'The chatbot runs on the Asyntai service, so some data leaves this site.';
@@ -76,4 +76,3 @@ $string['syncstagefailed'] = 'Saved, but Asyntai could not be reached. The read 
 $string['claimtitle'] = 'One more step';
 $string['claimdesc'] = 'Sign in to Asyntai to finish. Until you do, the ticked courses are not read.';
 $string['claimbutton'] = 'Finish in Asyntai';
-
